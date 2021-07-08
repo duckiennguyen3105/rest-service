@@ -40,20 +40,20 @@ import org.apache.commons.text.StringEscapeUtils;
 @RestController
 public class NotificationController {
     // region app registration information
-    private final String clientId = "";
-    private final String clientSecret = "";
-    private final String tenantId = "";
+    private final String clientId = "b0d61512-febc-4c54-9662-2e821f723b57";
+    private final String clientSecret = "B5O0UY8acL~JzEiP~_9PwL_kUVeimc-sx2";
+    private final String tenantId = "8154749f-7d9d-4c71-82a0-211b91ca5ba3";
     // endregion
     // region subscription information
-    private final String publicUrl = ""; // eg https://c2ddde53.ngrok.io no trailing slash
-    private final String resource = ""; // eg
+    private final String publicUrl = "https://1a0d25a85463.ngrok.io"; // eg https://c2ddde53.ngrok.io no trailing slash
+    private final String resource = "teams/allMessages"; // eg
     // teams/9c05f27f-f866-4cc0-b4c2-6225a4568bc5/channels/19:015c392a3030451f8b52fac6084be56d@thread.skype/messages
     private final String changeType = "created";
     // endregion
     // region certificate information
     private final String storename = "JKSkeystore.jks";
     private final String alias = "selfsignedjks";
-    private final String storepass = "";
+    private final String storepass = "betahouse3105";
     // endregion
 
     private final List<String> scopes = Arrays.asList("https://graph.microsoft.com/.default");
@@ -69,15 +69,18 @@ public class NotificationController {
                         .thenApply(s -> getMessageToDisplay(s))
                         .get();
     }
+
+
     private CompletableFuture<Subscription> createSubscription() {
         final GraphServiceClient<Request> graphClient = getClient();
         graphClient.setServiceRoot("https://graph.microsoft.com/beta");
         final Subscription subscription = new Subscription();
+
         subscription.changeType = this.changeType;
         subscription.notificationUrl = this.publicUrl + "/notification";
         subscription.resource = this.resource;
         subscription.expirationDateTime = OffsetDateTime.now().plusHours(1L);
-        subscription.clientState = "secretClientValue";
+        subscription.clientState = "1d6db7d2-6e5e-4c70-a4ec-3c1f3e2d7051";
 
         if (this.resource.startsWith("teams")) {
             subscription.includeResourceData = true;
@@ -204,6 +207,7 @@ public class NotificationController {
         final boolean isDataSignatureValid = this.IsDataSignatureValid(decryptedKey,
                 notifications.value.get(0).encryptedContent.data,
                 notifications.value.get(0).encryptedContent.dataSignature);
+            Integer a = null;
         boolean areValidationTokensValid = true;
         for (final String validationToken : notifications.validationTokens) {
             areValidationTokensValid = areValidationTokensValid && this.IsValidationTokenValid(
